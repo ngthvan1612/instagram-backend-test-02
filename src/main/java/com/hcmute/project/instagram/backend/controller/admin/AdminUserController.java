@@ -49,7 +49,7 @@ public class AdminUserController {
     return createUserResponse;
   }
   
-  @PostMapping("{id}/update-avatar")
+  @PutMapping("{id}/update-avatar")
   @ResponseStatus(HttpStatus.OK)
   public ResponseBaseAbstract updateUserAvatar(
     @PathVariable Integer id,
