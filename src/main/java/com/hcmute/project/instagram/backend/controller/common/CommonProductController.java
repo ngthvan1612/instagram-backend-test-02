@@ -1,16 +1,43 @@
 package com.hcmute.project.instagram.backend.controller.common;
 
-import com.hcmute.project.instagram.backend.domain.aggregate.productaggregate.dto.product.CreateProductRequest;
-import com.hcmute.project.instagram.backend.domain.aggregate.productaggregate.dto.product.GetProductResponse;
-import com.hcmute.project.instagram.backend.domain.aggregate.productaggregate.dto.product.ListProductResponse;
-import com.hcmute.project.instagram.backend.domain.aggregate.productaggregate.dto.product.UpdateProductRequest;
-import com.hcmute.project.instagram.backend.domain.aggregate.productaggregate.services.interfaces.ProductService;
-import com.hcmute.project.instagram.backend.domain.base.ResponseBaseAbstract;
-import com.hcmute.project.instagram.backend.domain.base.SuccessfulResponse;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import com.hcmute.project.instagram.backend.*;
+import com.hcmute.project.instagram.backend.controller.admin.*;
+import com.hcmute.project.instagram.backend.controller.common.*;
+import com.hcmute.project.instagram.backend.controller.exception.*;
+import com.hcmute.project.instagram.backend.domain.aggregate.treemessage.dto.tree.*;
+import com.hcmute.project.instagram.backend.domain.aggregate.treemessage.entities.*;
+import com.hcmute.project.instagram.backend.domain.aggregate.treemessage.repositories.*;
+import com.hcmute.project.instagram.backend.domain.aggregate.treemessage.services.*;
+import com.hcmute.project.instagram.backend.domain.aggregate.treemessage.services.interfaces.*;
+import com.hcmute.project.instagram.backend.domain.aggregate.useraggregate.dto.user.*;
+import com.hcmute.project.instagram.backend.domain.aggregate.useraggregate.entities.*;
+import com.hcmute.project.instagram.backend.domain.aggregate.useraggregate.enums.*;
+import com.hcmute.project.instagram.backend.domain.aggregate.useraggregate.repositories.*;
+import com.hcmute.project.instagram.backend.domain.aggregate.useraggregate.services.*;
+import com.hcmute.project.instagram.backend.domain.aggregate.useraggregate.services.interfaces.*;
+import com.hcmute.project.instagram.backend.domain.aggregate.productaggregate.dto.product.*;
+import com.hcmute.project.instagram.backend.domain.aggregate.productaggregate.dto.productcategory.*;
+import com.hcmute.project.instagram.backend.domain.aggregate.productaggregate.entities.*;
+import com.hcmute.project.instagram.backend.domain.aggregate.productaggregate.repositories.*;
+import com.hcmute.project.instagram.backend.domain.aggregate.productaggregate.services.*;
+import com.hcmute.project.instagram.backend.domain.aggregate.productaggregate.services.interfaces.*;
+import com.hcmute.project.instagram.backend.domain.aggregate.orderaggregate.dto.order.*;
+import com.hcmute.project.instagram.backend.domain.aggregate.orderaggregate.dto.orderdetail.*;
+import com.hcmute.project.instagram.backend.domain.aggregate.orderaggregate.entities.*;
+import com.hcmute.project.instagram.backend.domain.aggregate.orderaggregate.repositories.*;
+import com.hcmute.project.instagram.backend.domain.aggregate.orderaggregate.services.*;
+import com.hcmute.project.instagram.backend.domain.aggregate.orderaggregate.services.interfaces.*;
+import com.hcmute.project.instagram.backend.domain.base.*;
+import com.hcmute.project.instagram.backend.domain.exception.*;
+import com.hcmute.project.instagram.backend.infrastructure.aws.minio.*;
+import com.hcmute.project.instagram.backend.jwt.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
+import java.io.IOException;
+import jakarta.validation.Valid;
+import java.util.Map;
 
 @CrossOrigin("*")
 @RestController
@@ -27,8 +54,10 @@ public class CommonProductController {
 
   @GetMapping("")
   @ResponseStatus(HttpStatus.OK)
-  public ResponseBaseAbstract searchProduct() {
-    ListProductResponse listProductResponse = this.productService.listProducts();
+  public ResponseBaseAbstract searchProduct(
+    @RequestParam Map<String, String> queries
+  ) {
+    ListProductResponse listProductResponse = this.productService.searchProducts(queries);
     return listProductResponse;
   }
 
